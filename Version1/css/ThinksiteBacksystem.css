@@ -1,0 +1,79 @@
+.left {
+  width: 14%;
+  height: 100%;
+  background: #333;
+  float: left; }
+
+.left-content {
+  width: 80%;
+  height: 240px;
+  margin: 0 auto;
+  overflow: hidden; }
+
+.logo {
+  width: 100%;
+  height: 55px;
+  margin: 20px auto 0 auto;
+  background: url(../image/logo.png) no-repeat;
+  background-size: contain; }
+
+.information {
+  width: 100%;
+  height: 165px; }
+
+.information td {
+  width: 100%;
+  border: 1px solid #2f2f2f;
+  background: #666666;
+  color: #fff;
+  font-size: 16px; }
+
+.information td:hover {
+  background: #999;
+  color: #666;
+  cursor: pointer; }
+
+.right {
+  width: 85%;
+  height: auto;
+  overflow: hidden;
+  float: right; }
+
+.header {
+  width: 100%;
+  height: 40px;
+  background: #333; }
+
+.list {
+  width: auto;
+  height: 40px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 40px;
+  margin-left: 20px; }
+
+.worktab {
+  margin-top: 15px;
+  width: 100%;
+  height: auto; }
+
+.worktab td {
+  height: 40px;
+  font-size: 14px;
+  line-height: 40px;
+  border: 1px solid #d1d1d1; }
+
+.worktab thead td {
+  background: #333;
+  color: #fff; }
+
+.worktab tbody td {
+  color: #545454; }
+
+.worktab tbody tr:nth-child(even) {
+  background: #999; }
+
+.worktab tbody tr:hover {
+  background: #f2ebeb; }
+
+/*# sourceMappingURL=ThinksiteBacksystem.css.map */

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thinksite</title>
+    <link rel="stylesheet" href="css/ThinksiteBacksystem.css">
+    <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+</head>
+<body>
+    <div class="left">
+        <div class="left-content">
+            <div class="logo"></div>
+            <table class="information">
+                <tr>
+                    <td>培训课程</td>
+                </tr>
+                <tr>
+                    <td>培训校区</td>
+                </tr>
+                <tr>
+                    <td>讲师团队</td>
+                </tr>
+                <tr>
+                    <td>学员作品</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="right">
+        <div class="header">
+           <div class="list">
+              <span>首页</span>
+            <span>/</span>
+            <span>我的课程</span>
+            <span>/</span>
+            <span>课程列表</span> 
+           </div>
+        </div>
+        <table class="worktab">
+            <thead>
+                <tr>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+<script src="js/database2.js"></script>
+<script src="js/sorting_bigger.js"></script>
+<script src="js/sorting_smaller.js"></script>
+<script src="js/jquery.min.js"></script>
+<script>
+    $(function(){
+        var s_length=0;
+        var container1=0;
+        //adding tr
+        for(var i=1;i<Students.length;i++){
+            $(".worktab tbody").append('<tr>'+'</tr>')
+            s_length=Students[i].length;
+        }
+        //adding td
+        for(var j=0;j<=s_length;j++){
+               $(".worktab tbody tr").append('<td>'+'</td>');
+               $(".worktab thead tr").append('<td>'+'</td>'); 
+        }
+        
+        
+        $(".worktab thead td").eq(0).append('&nbsp'+'<span>&#xe615;</span>'+'<span>&#xe612;</span>')
+        
+        
+        //give values
+        for(var i=1;i<Students.length;i++){
+           for(var j=0;j<Students[i].length;j++){
+               $(".worktab tbody tr").eq(i-1).children("td").eq(j).html(Students[i][j]);
+               $(".worktab thead td").eq(j).html(Students[0][j]);
+               $(".worktab thead td").eq(Students[i].length).html("编辑信息")
+           }
+        }
+        
+        $(".worktab thead td").eq(0).append('&nbsp'+'<span>&#xe615;</span>'+'<span>&#xe612;</span>')
+        $(".worktab thead span").eq(0).on("click",function(){
+            container1=0;
+            sorting_bigger()
+            
+        })
+        $(".worktab thead span").eq(1).on("click",function(){
+            container1=0;
+            sorting_smaller()
+            
+        }) 
+        
+        
+
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
