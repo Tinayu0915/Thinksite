@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thinksite</title>
+    <link rel="stylesheet" href="css/ThinksiteBacksystem.css">
+    <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+</head>
+<body>
+    <div class="left">
+        <div class="left-content">
+            <div class="logo"></div>
+            <table class="information">
+                <tr>
+                    <td>培训课程</td>
+                </tr>
+                <tr>
+                    <td>培训校区</td>
+                </tr>
+                <tr>
+                    <td>讲师团队</td>
+                </tr>
+                <tr>
+                    <td>学员作品</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="right">
+        <div class="header">
+           <div class="list">
+              <span>首页</span>
+            <span>/</span>
+            <span>我的课程</span>
+            <span>/</span>
+            <span>课程列表</span> 
+           </div>
+        </div>
+        <div class="typeIn-outline">
+            <div class="typeIn">
+                <span>分类</span><input type="text" class="category">
+                <span>标题</span><input type="text" class="title">
+                <span>班级</span><input type="text" class="class">
+                <span>状态</span><input type="text" class="status">
+                <br>
+                <span>创建时间</span><input type="text" class="time">
+                <span>创建者</span><input type="text" class="creator">
+                <span>分校地区</span><input type="text" class="branch">
+                <input type="button" value="录入" class="type">&nbsp;&nbsp;<span class="warning" style="color:red;display:none">请勿留空!</span>
+            </div>
+        </div>
+        <table class="worktab">
+            <thead>
+                <tr>
+                    <td><input type="checkbox" class="headcheck">&nbsp;&nbsp;&nbsp;ID&nbsp;<span class="up">&#xe615;</span><span class="down">&#xe612;</span></td>
+                    <td>分类</td>
+                    <td>标题</td>
+                    <td>班级</td>
+                    <td>状态</td>
+                    <td>创建时间</td>
+                    <td>创建者</td>
+                    <td>分校地区</td>
+                    <td>编辑|删除</td>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div class="delete">
+            <input type="text" class="selected-id" placeholder="请选择要删除的ID或全选">
+            <input type="button" class="selected-delete" value="选中删除">
+        </div>
+    </div>
+</body>
+</html>
+<script src="js/database.js"></script>
+<script src="js/sorting_bigger.js"></script>
+<script src="js/sorting_smaller.js"></script>
+<script src="js/jquery.min.js"></script>
+<script>
+    $(function(){
+        var container1=null;
+        var typeInId=0;
+        var blank_num=0;
+        var tr_ind=0;
+        var tr_id=0;
+        var CheckboxId=[];
+        var check_id=0;
+        var headcheck_id=0;
+        var emp=null;
+        var ind=0;
+        var num=0;
+        var btn_ind=0;
+        var output=[];
+        var check_count=0;
+        var num=0;
+        var typeIn_check=[];
+        var key_status=false;
+        //tbody filling
+        function tbodyfiller(json){
+            var InformationInputer=
+                '<tr title="'+json.ID+'">'+
+                    '<td>'+'<input type="checkbox" class="check" title="'+json.ID+'">'+'&nbsp;&nbsp;'+json.ID+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.category+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.title+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.class+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.status+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.time+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.creator+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="text" class="text-list" value="'+json.branch+'" disabled>'+'</td>'+
+                    '<td>'+'<input type="button" class="btn1" value="编辑" title="'+json.ID+'+">'+'<span>|</span>'+'<input type="button" value="删除" class="btn2" title="'+json.ID+'+">'+ '</td>'+               
+                '</tr>'
+            return InformationInputer
+        }
+        function tbodyInitializer(Students){
+            $(".worktab tbody").html("");
+            $.each(Students,function(key,val){
+            $(".worktab tbody").append(tbodyfiller(val))
+        })
+        }
+        tbodyInitializer(Students);
+        
+        //
+        $(".worktab thead span.up").on("click",function(){
+            sorting_bigger(Students);
+            tbodyInitializer(Students);
+        })
+        $(".worktab thead span.down").on("click",function(){
+            sorting_smaller(Students);
+            tbodyInitializer(Students);
+        })
+        
+        //adding new rows
+         $.each(Students,function(key,val){
+            if(val.ID>typeInId){
+                typeInId=val.ID
+            }
+        })
+         function TypeInRefresher(Students,students_){
+             Students.unshift({
+                ID:students_.ID,
+                category:$(students_.category).val(),
+                title:$(students_.title).val(),
+                class:$(students_.class).val(),
+                status:$(students_.status).val(),
+                time:$(students_.time).val(),
+                creator:$(students_.creator).val(),
+                branch:$(students_.branch).val()
+            })
+            $(".typeIn input[type='text']").val("");
+             tbodyInitializer(Students);
+         }
+        
+        //check if inputing contents
+        $(".typeIn").on("click",".type",function(){
+               for(var i=0;i<$(".typeIn input[type='text']").length;i++){
+                   if($(".typeIn input[type='text']").eq(i).val()!==""){
+                      typeIn_check=0 
+               }else{
+                   typeIn_check++;
+               }
+               }
+            if(typeIn_check==0){
+               key_status=false;//reset status of key（将键盘恢复默认状态）
+               typeInId++;
+               TypeInRefresher(Students,                                   {ID:typeInId,category:".category",title:".title",class:".class",status:".status",time:".time",creator:".creator",branch:".branch"});
+                $(".warning").hide(); 
+            }else if(typeIn_check > 0 && key_status==false){//check if key was pressed down（检查键盘是否按下，排除键盘影响）
+                $(".warning").show();
+                typeIn_check=0;
+            }  
+        })
+    
+        //click deleting row
+        function DeleteRow(){
+            for(var i=0;i<Students.length;i++){
+                if(Students[i].ID==tr_id){
+                  Students.splice(i,1);
+                  $(".worktab tbody tr").eq(tr_ind).remove();  
+                }
+            }
+        }
+        
+        $(".worktab").on("click",".btn2",function(){
+            tr_ind=$(this).parent("td").parent("tr").index();
+            tr_id=$(this).parent("td").parent("tr").attr("title");
+            DeleteRow();
+            $.each(CheckboxId,function(key,val){
+                    if(val==tr_id){
+                      CheckboxId.splice(key,1);
+                      output=CheckboxId.join();
+                      $(".selected-id").val('选中ID '+output);  
+                    }
+        })
+        })
+        
+        
+        //click deleting tbody
+        $(".worktab").on("click",".check",function(){
+            check_id=$(this).attr("title");
+            if($(this).attr("checked")){
+               CheckboxId.unshift(check_id);
+               output=CheckboxId.join();
+                if(CheckboxId.length==$(".check").length){
+                $(".headcheck").attr("checked",true);
+                $(".selected-id").val("全选");
+            }else{
+                $(".headcheck").attr("checked",false);
+                $(".selected-id").val('选中ID '+output);
+            }
+            }else{
+                $(".headcheck").attr("checked",false);
+                CheckboxId=[];
+                $(".selected-id").val("");
+                for(var i=0;i<$(".check").length;i++){
+                    check_id=$(".check").eq(i).attr("title");
+                    if($(".check").eq(i).attr("checked")){
+                       CheckboxId.unshift(check_id);
+                       output=CheckboxId.join();
+                       $(".selected-id").val('选中ID '+output); 
+                    }
+                }
+            }
+            
+        })
+
+        $(".headcheck").on("click",function(){
+           headcheck_id=$(this).attr("title");
+           if($(".headcheck").attr("checked")){
+              $(".selected-id").val("全选");
+              for(var i=0;i<$(".check").length;i++){
+                   $(".check").eq(i).attr("checked",true);
+           } 
+           }else{
+              $(".selected-id").val("");
+              CheckboxId=[];
+              for(var i=0;i<$(".check").length;i++){
+                  $(".check").eq(i).attr("checked",false);
+           } 
+           }
+       })
+        $(".selected-delete").on("click",function(){
+           for(var i=0;i<CheckboxId.length;i++){
+               for(var j=0;j<Students.length;j++){
+                  if(CheckboxId[i]==Students[j].ID){
+                      Students.splice(j,1);
+                      $(".worktab tbody tr").eq(j).remove(); 
+                  }
+           }
+       }
+            $(".selected-id").val("");
+            CheckboxId=[];
+            $(".headcheck").attr("checked",false)
+       })
+        
+              
+       //keydown deleting
+       $(window).keydown(function(e){
+            key_status=true;
+           var key=e.keyCode;
+           switch(key){
+            case 40:
+                if(num<$(".worktab tbody tr").length){
+                   num++;
+                   RowShifting();
+                }else{
+                    num=-1
+                }  
+            break;
+            case 38:
+                if(num>=0){
+                    num--;
+                   RowShifting() 
+                }else{
+                    num=$(".worktab tbody tr").length-1
+                }
+            break; 
+            case(13):
+               tr_ind=$(".worktab tbody tr.b").index();
+               tr_id=$(".worktab tbody tr.b").attr("title");
+               DeleteRow();
+            break;
+            default:
+            break
+           }
+           typeIn_check=0;
+       })
+       
+       function RowShifting(){
+          $(".worktab tbody tr").eq(num).addClass("b").siblings("tr").removeClass("b");
+               for(var i=0;i<$(".worktab tbody tr").eq(num).children("td").length;i++){
+                  $(".worktab tbody tr").eq(num).children("td").eq(i).children(".text-list").addClass("b").parent("td").parent("tr").siblings("tr").children("td").children(".text-list").removeClass("b");
+               };  
+       }
+        
+       //click editing row 
+        $("body").on("dblclick","td",function(){
+            $(this).children(".text-list").removeAttr("disabled")
+        })
+        $("body").on("blur","td",function(){
+            $(this).children(".text-list").attr("disabled",true);
+        })
+        
+        $(".worktab").on("click",".btn1",function(){
+            btn_ind=$(this).parent("td").parent("tr").index();
+            for(var i=0;i<$(".worktab tbody tr").eq(btn_ind).children("td").children("input[type='text']").length;i++){
+                $(".worktab tbody tr").eq(btn_ind).children("td").children(".text-list").eq(i).removeAttr("disabled");
+                $(".worktab tbody tr").eq(btn_ind).siblings("tr").children("td").children(".text-list").eq(i).attr("disabled",true);
+            }
+        })
+            
+        
+        
+        
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
