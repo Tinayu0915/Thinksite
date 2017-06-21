@@ -99,6 +99,8 @@
         var typeIn_check=[];
         var key_status=false;
         var enter_click=false;
+        
+        //表格内容渲染
         //tbody filling
         function tbodyfiller(json){
             var InformationInputer=
@@ -123,7 +125,7 @@
         }
         tbodyInitializer(Students);
         
-        //
+        //ID排序
         $(".worktab thead span.up").on("click",function(){
             sorting_bigger(Students);
             tbodyInitializer(Students);
@@ -133,6 +135,7 @@
             tbodyInitializer(Students);
         })
         
+        //录入信息
         //adding new rows
          $.each(Students,function(key,val){
             if(val.ID>typeInId){
@@ -154,6 +157,7 @@
              tbodyInitializer(Students);
          }
         
+        //点击“录入”信息按钮前，检查是否输入信息输入框是否存空        
         //check if inputing contents
         $(".typeIn").on("click",".type",function(){
                for(var i=0;i<$(".typeIn input[type='text']").length;i++){
@@ -174,6 +178,7 @@
             }  
         })
     
+        //点击删除一行信息
         //click deleting row
         function DeleteRow(){
             for(var i=0;i<Students.length;i++){
@@ -204,7 +209,7 @@
         })
         })
         
-        
+        //点击删除所有信息
         //click deleting tbody
         $(".worktab").on("click",".check",function(){
             check_id=$(this).attr("title");
@@ -265,7 +270,7 @@
             $(".headcheck").attr("checked",false)
        })
         
-              
+        //键盘下按删除      
        //keydown deleting
        $(window).keydown(function(e){
            key_status=true;
@@ -327,6 +332,7 @@
                };  
        }
         
+        //点击编辑某行信息（思路:表格每一单元格内容由输入框填充，可编辑状态下，输入框disabled为false，反之为true）
        //click editing row 
         $("body").on("dblclick","td",function(){
             $(this).children(".text-list").removeAttr("disabled")
