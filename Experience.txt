@@ -1,0 +1,15 @@
+jquery:
+1.how to fill some unlimited number of rows into a table:
+key:create a row structure in a database,callback function is used.
+2.how to locate certain row/rows or other elements:
+key:using database,give them some style values,like "title"¡¢class name or ID or something else;let the selected object have the same ID was the to-be-located ones.
+3.how to remove a row
+key:delete the database element(s£©accordingly,remove the row structure;
+4.how to add new rows
+key:create a new array to hold new row-contents.Remember to empty the table body(in this case),then refill the table body.
+5.to show the IDs of checked checkbox.
+key:use function join() which turn a elements of a array into connected string.
+6.how to make new added elements under control of all action events;
+key:use event listener
+7.key event influences input events:
+in this case, keydown functions among the influenced the check results of the input events.a variety was set to check if key was pressed.But it's not perfect with some prblems to be solved.
