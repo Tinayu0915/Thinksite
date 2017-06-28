@@ -42,7 +42,7 @@ var Students=[
     {
    ID:25,
     category:"第二学期",
-    title:"数学+英语",
+    title:"数学+语文",
     class:"鑫斯达第141期",
     status:"已发布",
     time:"2016-11-03",
